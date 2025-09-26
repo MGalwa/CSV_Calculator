@@ -285,6 +285,7 @@ class FileProcessor:
         # Return lowercase counts, uppercase counts, and the total number of letters.
         return letters_count, uppercase_count, total_letters
 
+
     # Method to remove the input file after processing is complete
     def remove_input_file(self, gui):
         try:
@@ -295,6 +296,39 @@ class FileProcessor:
             # Handle any errors that occur during the deletion process.
             gui.display_message(f"Error deleting the input file: {e}")
 
+
+ # Helper function to calculate statistics for letters
+def calculate_letter_statistics(letters_list):
+
+    letters_count = {}  # Dictionary to hold total count of each letter (lowercase).
+    uppercase_count = {}  # Dictionary to hold uppercase counts of each letter.
+    total_letters = len(letters_list)  # Total number of letters for percentage calculations.
+
+     # Iterate through each letter in the list and gather stats.
+    for letter in letters_list:
+        # Convert to lowercase to handle total occurrences (case-insensitive).
+        letter_lower = letter.lower()
+        letters_count[letter_lower] = letters_count.get(letter_lower, 0) + 1
+
+        # If the letter is uppercase, increment its uppercase count.
+        if letter.isupper():
+            uppercase_count[letter] = uppercase_count.get(letter, 0) + 1
+
+    # Create a result table with combined statistics for each letter.
+    letter_stats = {}
+    for letter, count in letters_count.items():
+         # Get uppercase occurrences, default to 0 if unavailable.
+        upper_count = uppercase_count.get(letter.upper(), 0)
+        # Calculate the percentage of the letter relative to total letters.
+        percentage = (count / total_letters) * 100
+        # Store all statistics in a dictionary keyed by the letter.
+        letter_stats[letter] = {
+            'count_all': count,
+            'count_uppercase': upper_count,
+            'percentage': percentage
+        }
+
+    return letter_stats  # Return the consolidated letter statistics dictionary.
 
 # Class CSVProcessor handles the creation and updating of CSV files for word and letter statistics.
 class CSVProcessor:
@@ -332,38 +366,30 @@ class CSVProcessor:
             # Handle errors during file processing and print the exception message.
             print(f"Error during CSV file processing: {e}")
 
-    # Method to create or update the second CSV file (letter statistics).
     def create_or_update_csv2_file(self):
+        """
+        Writes letter statistics (from the output file) to a CSV file.
+        """
         try:
-            # Extract the list of letters (case-sensitive) from the output file using FileProcessor.
-            letters_list = self.file_processor.write_letters_output_file()
+            letters_list = self.file_processor.write_letters_output_file()  # Extract letters
 
-            # Check if there are any valid letters in the output file.
-            if not letters_list:  # If no letters are found, print a message and exit the function.
+            if not letters_list:  # No letters found
                 print("Output file is empty or contains no valid letters. CSV file will not be created or updated.")
-                return  # Stop processing if the letter list is empty.
+                return
 
-            # Get statistics for letters including counts (lowercase, uppercase, and total percentage).
-            letters_count, uppercase_count, total_letters = self.file_processor.count_letters_occurrences_from_list(letters_list)
+            # Directly call the global `calculate_letter_statistics` function
+            letter_stats = calculate_letter_statistics(letters_list)
 
-            # Write the letter statistics to the CSV file.
+            # Write to the CSV
             with open(self.csv2_file_path, 'w', newline='', encoding='utf-8') as csvfile:
-                csv_writer = csv.writer(csvfile)  # Initialize the CSV writer.
-                # Write the header row in the CSV file.
-                csv_writer.writerow(['Letter', 'Count_All', 'Count_Uppercase', 'Percentage'])
-
-                # Iterate through the lowercase letter count dictionary and calculate details for each letter.
-                for letter, count in letters_count.items():
-                    upper_count = uppercase_count.get(letter.upper(), 0)  # Retrieve the uppercase count for the letter.
-                    percentage = (count / total_letters) * 100  # Calculate the percentage of this letter in the total.
-                    # Write the letter statistics to the CSV file (letter, total count, uppercase count, percentage).
-                    csv_writer.writerow([letter, count, upper_count, f"{percentage:.2f}%"])
-
-            # Inform the user that the CSV file has been successfully updated.
+                csv_writer = csv.writer(csvfile)
+                csv_writer.writerow(['Letter', 'Count_All', 'Count_Uppercase', 'Percentage'])  # Write header
+                for letter, stats in letter_stats.items():
+                    csv_writer.writerow([
+                        letter, stats['count_all'], stats['count_uppercase'], f"{stats['percentage']:.2f}%"
+                    ])
             print(f"CSV file '{self.csv2_file_path}' has been updated with letter occurrence statistics.")
-
         except Exception as e:
-            # Handle any error during file processing and print the exception message.
             print(f"Error during CSV file processing: {e}")
 
 # Main execution logic - entry point of the script.

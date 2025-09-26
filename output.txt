@@ -1,53 +1,7 @@
 News Feed App
 
 News ------------------------
-Today it's raining. take your umbrella.
+It's so sunny! I love it
 Gliwice
-Published on: 23/09/2025
-
-Private Ad ------------------------
-I want to sell a car. great price!! only 1000 zł
-Actual until: 2025-12-12, 80 days left
-
-Book Review ------------------------
-Diune is fantastic book! i'm such a big fan <3
-Rate: 5/5
-Published on: 23/09/2025
-
-News ------------------------
-Today it's cloudy! It's pretty dark.
-Wroclaw
-Published on: 24/09/2025
-
-News ------------------------
-It's so windy today!! Woooow
-Katowice
-Published on: 25/09/2025
-
-Private Ad ------------------------
-I want to sell a house! It's sp pretty, wow.
-Actual until: 2026-01-01, 98 days left
-
-News ------------------------
-It's sunny! Woooow
-Łodz
-Published on: 25/09/2025
-
-Private Ad ------------------------
-I want to sell a bike
-Actual until: 2026-01-01, 98 days left
-
-News ------------------------
-It's so freaking windy
- Gliwice
-Published on: 25/09/2025
-
-Private Ad ------------------------
-I need to sell a tv
-Actual until: 2026-02-02, 130 days left
-
-News ------------------------
-It's sunny! I love it
-Katowice
-Published on: 25/09/2025
+Published on: 26/09/2025
 
