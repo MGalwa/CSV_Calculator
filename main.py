@@ -340,6 +340,7 @@ class CSVProcessor:
 
     # Method to create or update the first CSV file (word statistics).
     def create_or_update_csv1_file(self):
+
         try:
             # Extract the list of lowercase words from the output file using FileProcessor.
             words_list = self.file_processor.write_words_output_file()
@@ -367,9 +368,7 @@ class CSVProcessor:
             print(f"Error during CSV file processing: {e}")
 
     def create_or_update_csv2_file(self):
-        """
-        Writes letter statistics (from the output file) to a CSV file.
-        """
+
         try:
             letters_list = self.file_processor.write_letters_output_file()  # Extract letters
 
